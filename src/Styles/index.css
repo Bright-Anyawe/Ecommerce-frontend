@@ -1,0 +1,279 @@
+:root {
+  --dominate-color: white;
+}
+
+
+body {
+  margin: 0;
+}
+
+
+.rootLayout {
+  display: grid;
+  /* grid-template-columns: 10; */
+  grid-template-rows: 80px 100vh;
+  background-color: #f8f9fc;
+;
+}
+
+header {
+  grid-area: 1 / 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0;
+  background-color: rgb(146, 144, 144);
+  padding-inline: 25px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 9000;
+  color: white;
+  height: 80px;
+}
+
+header nav a.active {
+    background: black;
+    fill: white;
+}
+
+header nav a {
+    text-decoration: none;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.navContainer {
+  padding-right: 70px;
+}
+
+.navLinks a {
+  color: var(--dominate-color);
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.shopCartContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.shopCartContainer svg {
+  width: 26px;
+  display: flex;
+  align-self: center;
+
+}
+
+main {
+  grid-area: 2 / 1 / 5 / 2;
+  
+}
+
+.hero-section {
+  color: white;
+  
+  align-items: flex-end;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* opacity: 0.5; */
+  height: 100vh;
+}
+
+.hero-section img {
+  filter: brightness(.66);
+  height: 720px;
+  object-fit: cover;
+  width: 100%;
+  height: inherit;
+}
+
+.overlayContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-left: 12px;
+  padding-right: 10%;
+  position: absolute;
+  animation: textSlide 1.65s ease;
+}
+
+.overlayText {
+  color: var(--dominate-color);
+  font-family: "Montserrat", sans-serif;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  font-size: 2.5rem;
+}
+
+.overlayText h2 {
+  margin-bottom: 0 0 5px 0;
+
+}
+
+.homeShopNowBtn {
+      background-color: rgb(13, 141, 226);
+    border-radius: 4px;
+    padding: 15px 52px;
+    transition: .2s ease;
+    color: var(--dominate-color);
+    font-family: Montserrat-Bold, sans-serif;
+    font-weight: 700;
+    border: 0;
+    
+  }
+  
+  .homeShopNowBtn a {
+    color: white;
+    text-decoration: none;
+
+}
+
+@keyframes textSlide {
+  0% {
+    opacity: 0;
+    translate: 0 -200px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 10;
+  }
+}
+
+.featuredProduct {
+    padding-bottom: 5rem;
+}
+
+
+.homeHeadText {
+  padding: 50px;
+      font-family: Montserrat-Bold, sans-serif;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+.homeHeadText p {
+  font-size: 2rem;
+      font-family: Montserrat-Bold, sans-serif;
+
+}
+
+
+.ourOfferContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  margin: 20px 0 0 0;
+  
+  
+}
+
+.ourOfferSubContainer {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 100px;
+}
+
+.offerEl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(240, 103, 61);
+  margin: 50px 0 0 0;
+}
+
+.free-fastContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  width: 300px;
+}
+
+.customerServiceContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  width: 300px;
+}
+
+
+.ourOfferContainer img {
+  width: 150px;
+  height: 150px;
+}
+
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.shopCartContainer {
+  display: flex;
+  align-items: center;
+}
+
+svg {
+  width: 20px;
+}
+
+.product img {
+  width: 120px;
+  max-height: 200px;
+  object-fit: cover;
+  object-fit: contain;
+  object-position: 50;
+  border-radius: 9px;
+}
+
+
+footer {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+footer a {
+  color: white;
+  color: white;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--primary);
+}
+
+footer a:hover {
+  color: white;
+}
+
+.briefTextInFooter {
+  font-size: 1.3rem;
+  max-width: 70%;
+}
+
+footer svg {
+  fill: white;
+}
+
+footer p {
+  color: white;
+}
+

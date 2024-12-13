@@ -1,0 +1,157 @@
+
+.cartNumberWrapper {
+  width: 20px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: #ccc;
+    position: relative;
+    right: 40px;
+    top: 8px;
+    font-weight: 800;
+    display: flex
+;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.cartNumber {
+    position: relative;
+    font-weight: 900;
+    z-index: 9000;
+    color: black;
+}
+
+.summerList {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.summeryListContainer {
+  margin: 0 0 0 0;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+}
+.productPrice_TitleContainer h4 {
+  max-width: 250px;
+  margin: 50px 0 0 0;
+}
+
+.cartImageContainer {
+  border: 1px solid gray;
+  padding: 15px;
+}
+
+.summeryListSubContainer img {
+  width: 70px;
+  height: 70px;
+}
+
+.totalSummery {
+  display: flex;
+  flex-direction: column;
+  margin: 56px 0 0 0;
+  gap: 20px;
+  border: 1px solid gray;
+  border-radius: 9px;
+  padding: 5px;
+  height: 100%;
+}
+
+.totalSummery div {
+  font-size: 1.2rem;
+}
+
+.subTotal,
+.shippingFee,
+.total {
+  display: flex;
+  justify-content: space-between;
+}
+
+.summeryListSubContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+.summeryTextContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.summeryTextContainer svg {
+  width: 25px;
+}
+
+.delQtySelectedContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.checkOutBtn {
+  font-size: 1.2rem;
+  line-height: 1rem;
+  text-align: center;
+  padding: 20px;
+  width: 254px;
+  font-weight: 700;
+  background-color: #ccc;
+
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.checkOutBtn:hover {
+  background-color: #aaa8a8cc;
+  border: 1px solid rgb(185, 179, 179);
+  border-radius: 9px;
+}
+
+.css-1i43dhb {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: row;
+    gap: 24px;
+}
+
+.css-1i43dhb {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: row;
+    gap: 24px;
+    padding: 33px 10px;
+}
+
+.css-ojwvcx {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 24px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 16px;
+    height: 100%;
+}

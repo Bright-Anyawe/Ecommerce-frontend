@@ -1,0 +1,162 @@
+
+
+.itemsContainer li a {
+  font-weight: 800;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+.quantityContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: start;
+}
+
+.quantityContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.quantityContainer input {
+  height: 20px;
+  width: 35px;
+  color: white;
+  background-color: black;
+  border: none;
+}
+
+.priceOrderEl {
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.orderBtn {
+  width: 200px;
+  border-radius: 0;
+}
+
+input[type="number"]:hover::-webkit-inner-spin-button {
+  width: 19px;
+  height: 30px;
+}
+
+
+.titleContainer {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: start;
+}
+
+
+.shopCartContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+.shopCartContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+
+.imageContainer img {
+           max-width: 120px;
+        max-height: 200px;
+        object-fit: cover;
+        object-fit: contain;
+        object-position: 50% 50%;
+        border-radius: 9px;
+}
+
+.container {
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 2px 2px #000;
+    width: 370px;
+    padding: 20px;
+    gap: 20px;
+    height: 250px;
+}
+
+.additionalInfoContainer {
+    display: flex
+;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.shopProductContainer {
+    display: flex
+;
+    padding-top: 47px;
+
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.quantityContainer button {
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    width: 30px;
+    height: 30px;
+}
+
+ .shopProductContainer button {
+    /* border-radius: 8px; */
+    border: none;
+    padding: .6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--dominate-color);
+    background-color: #000;
+    cursor: pointer;
+    transition: border-color .25s;
+}

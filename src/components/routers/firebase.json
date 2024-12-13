@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "/functions/**",
+        "function": "createPaymentIntent"
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions"
+  }
+}
