@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./Styles/index.css";
 import "./Styles/App.css"
 import "./Styles/Cart.css"
+import "./Styles/Mobile_Layout.css"
 
 
 

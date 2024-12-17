@@ -43,6 +43,12 @@ header nav a {
     border-radius: 4px;
 }
 
+.userAuthenticateContainer {
+  display: flex;
+}
+
+
+
 .navContainer {
   padding-right: 70px;
 }

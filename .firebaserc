@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "ecommerce-2d416",
+    "ecommerce-frontend": "ecommerce-2d416"
+  },
+  "targets": {},
+  "etags": {}
+}

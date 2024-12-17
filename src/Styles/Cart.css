@@ -1,25 +1,23 @@
-
 .cartNumberWrapper {
   width: 20px;
-    height: 21px;
-    border-radius: 50%;
-    background-color: #ccc;
-    position: relative;
-    right: 40px;
-    top: 8px;
-    font-weight: 800;
-    display: flex
-;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+  height: 21px;
+  border-radius: 50%;
+  background-color: #ccc;
+  position: relative;
+  right: 40px;
+  top: 8px;
+  font-weight: 800;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .cartNumber {
-    position: relative;
-    font-weight: 900;
-    z-index: 9000;
-    color: black;
+  position: relative;
+  font-weight: 900;
+  z-index: 9000;
+  color: black;
 }
 
 .summerList {
@@ -115,43 +113,17 @@
   border-radius: 9px;
 }
 
-.css-1i43dhb {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex
-;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: row;
-    gap: 24px;
-}
-
-.css-1i43dhb {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex
-;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: row;
-    gap: 24px;
-    padding: 33px 10px;
-}
-
 .css-ojwvcx {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex
-;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    gap: 24px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    padding: 16px;
-    height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid gray;
+  border-radius: 8px;
+  padding: 16px;
+  height: 100%;
 }

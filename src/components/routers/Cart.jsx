@@ -1,23 +1,28 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useContext } from "react";
 import { QuantityContext } from "../Context/ContextProvider";
 import { Delete } from "../Feature Components/Delete";
 import { Checkout } from "../Payment Integration components/CheckoutForm";
-import { Box, Typography, Button, IconButton, Divider } from "@mui/material";
-import { DeleteForever } from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
+import { useViewport } from "react-viewport-hooks";
 
 export function Cart() {
-  const { qtySummery, setQtySummery } = useContext(QuantityContext);
-  const [totalCostPrice, seTotalCostPrice] = useState([]);
+  const { qtySummery, setQtySummery, setCartCount } =
+    useContext(QuantityContext);
+  const [totalCostPrice, setTotalCostPrice] = useState([]);
+  const { vw } = useViewport();
 
-  // Handle total cost calculation
   useMemo(() => {
     function handleCostPrice() {
       if (qtySummery.length !== 0) {
-        const totalCost = qtySummery.reduce((acc, summery) => {
-          return acc + summery.productPrice * summery.QtySelected;
-        }, 0);
-        seTotalCostPrice(totalCost);
+        const totalCost = qtySummery
+          .reduce((acc, summery) => {
+            return acc + summery.productPrice * summery.QtySelected;
+          }, 0)
+          .toFixed(2);
+        setTotalCostPrice(totalCost);
+      } else {
+        setTotalCostPrice(0);
       }
     }
 
@@ -25,23 +30,45 @@ export function Cart() {
   }, [qtySummery]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      {/* Cart Items List */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: vw < 500 ? "column" : "row",
+        justifyContent: "center",
+        marginTop: "40px",
+        marginBottom: "50px",
+        gap: "50px",
+      }}
+      // ref={cartContainerRef}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          alignItems: "center",
+          justifyContent: "center",
+          maxWidth: vw < 500 ? "500px" : "746px",
+        }}
+        // ref={productContainerRef}
+      >
         {qtySummery.length !== 0 ? (
           qtySummery.map((summery, index) => (
             <Box
               key={index}
               sx={{
                 display: "flex",
+                flexDirection: vw < 500 && "column",
                 alignItems: "center",
                 gap: 2,
                 padding: 2,
                 border: "1px solid #ddd",
                 borderRadius: 2,
+                maxWidth: vw < 500 ? "250px" : vw > 1110 ? "703px" : "703",
+                width: vw > 1110 ?  "700px" : "100%",
+                textAlign: "center",
               }}
             >
-              {/* Product Image */}
               <Box sx={{ border: "1px solid gray", padding: 2 }}>
                 <img
                   src={summery.productImgUrl}
@@ -51,22 +78,32 @@ export function Cart() {
                 />
               </Box>
 
-              {/* Product Info */}
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <Typography variant="h6">{summery.productName}</Typography>
-                <Typography>${summery.productPrice}</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  justifyContent: "center",
+                  alignItems: vw < 500 ? "center" : "start",
+                }}
+              >
+                <Typography variant="h6" sx={{ fontSize: "1rem" }}>
+                  {summery.productName}
+                </Typography>
+                <Typography sx={{ fontWeight: "700" }}>
+                  ${summery.productPrice}
+                </Typography>
+
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Typography>Qty: {summery.QtySelected}</Typography>
-                  <IconButton
-                    onClick={() => {
-                      const updatedSummery = qtySummery.filter(
-                        (_, idx) => idx !== index
-                      );
-                      setQtySummery(updatedSummery);
-                    }}
-                  >
-                    <DeleteForever />
-                  </IconButton>
+                  <Typography sx={{ fontWeight: "700" }}>
+                    Qty: {summery.QtySelected}
+                  </Typography>
+                  <Delete
+                    qtySummery={qtySummery}
+                    productIndex={index}
+                    setSummery={setQtySummery}
+                    setCartCount={setCartCount}
+                  />
                 </Box>
               </Box>
             </Box>
@@ -78,61 +115,62 @@ export function Cart() {
         )}
       </Box>
 
-      {/* Total Summary */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: 3,
-          border: "1px solid gray",
-          borderRadius: 2,
-          padding: 2,
+          justifySelf: "center",
+          alignItems: "center",
+          maxWidth: "500px",
+          // marginBottom: "50px",
+          maxHeight: "300px",
         }}
       >
-        <Typography variant="h6">Summary</Typography>
-        <Typography color="textSecondary">
-          Congratulations! on free shipping
-        </Typography>
-
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            paddingTop: 2,
-            borderTop: "1px solid #ddd",
+            flexDirection: "column",
+            gap: 3,
+            border: "1px solid gray",
+            borderRadius: 2,
+            padding: 2,
+            // justifySelf: "center",
+            // alignItems: "center",
+            // maxWidth: "300px",
           }}
         >
-          <Typography variant="body1">SubTotal:</Typography>
-          <Typography variant="body1">${totalCostPrice}</Typography>
+          <Typography variant="h6">Summary</Typography>
+          <Typography color="textSecondary">
+            Congratulations! on free shipping
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: 2,
+              borderTop: "1px solid #ddd",
+            }}
+          >
+            <Typography variant="body1">SubTotal:</Typography>
+            <Typography variant="body1">${totalCostPrice}</Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: 1,
+              borderTop: "1px solid #ddd",
+            }}
+          >
+            <Typography variant="body1">Total:</Typography>
+            <Typography variant="body1">${totalCostPrice}</Typography>
+          </Box>
+
+          <Checkout totalAmount={totalCostPrice} />
         </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            paddingTop: 1,
-            borderTop: "1px solid #ddd",
-          }}
-        >
-          <Typography variant="body1">Total:</Typography>
-          <Typography variant="body1">${totalCostPrice}</Typography>
-        </Box>
-
-        <Checkout totalAmount={totalCostPrice} />
-
-        {/* CheckOut Button */}
-        {/* <Button
-          variant="contained"
-          sx={{
-            padding: "15px",
-            borderRadius: "8px",
-            backgroundColor: "#ccc",
-            fontWeight: 700,
-            "&:hover": { backgroundColor: "#aaa8a8cc" },
-          }}
-        >
-          Checkout (${totalCostPrice})
-        </Button> */}
       </Box>
     </Box>
   );

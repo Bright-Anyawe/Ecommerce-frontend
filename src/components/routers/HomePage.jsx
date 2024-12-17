@@ -9,7 +9,7 @@ export const HomePage = () => {
         <div className="overlayContainer">
           <h2 className="overlayText">Make room for better living</h2>
           <button className="homeShopNowBtn">
-            <NavLink to="productList">Shop Now</NavLink>
+            <NavLink to="/productList">Shop Now</NavLink>
           </button>
         </div>
       </section>

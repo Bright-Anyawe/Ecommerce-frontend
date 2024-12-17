@@ -11,6 +11,7 @@ import { QuantityContext } from "../Context/ContextProvider";
 
 export const ProductList = () => {
   const {
+    cartCount,
     setCartCount,
     inputQuantity,
     setInputQuantity,
@@ -99,66 +100,150 @@ export const ProductList = () => {
   }, []);
 
   useEffect(() => {
-    if (products.length !== 0) {
+    if (products.length !== 0 && Object.keys(inputQuantity).length === 0) {
       const initialQuantity = products.reduce((acc, item) => {
         if (item.id !== undefined && item.id !== null) {
           acc[item.id] = 0;
         }
         return acc;
       }, {});
-
       setInputQuantity(initialQuantity);
     }
-  }, [products, setInputQuantity]);
+  }, [products, setInputQuantity, inputQuantity]);
+
+  useEffect(() => {
+    localStorage.setItem("cartCount", cartCount);
+    localStorage.setItem("qtySummery", JSON.stringify(qtySummery));
+    localStorage.setItem("inputQuantity", JSON.stringify(inputQuantity));
+  }, [cartCount, qtySummery, inputQuantity]);
 
   // function addToCart(e, productId, product) {
-  //   // e.persist();
-  //   // ;
   //   let totalQuantity = Object.values(inputQuantity).reduce((acc, qty) => {
   //     return acc + qty;
   //   }, 0);
 
   //   setCartCount(totalQuantity);
 
-  //   const existingProductIndex = qtySummery.findIndex(
-  //     (item) => item.productImgUrl === product.image
-  //   );
-
   //   const newQuantity = inputQuantity[productId];
+  //   if (newQuantity > 0) {
+  //     setQtySummery((prevSummery) => {
+  //       const existingProductIndex = prevSummery.findIndex(
+  //         (p) => p.productImgUrl === product.imageUrl
+  //       );
+
+  //       if (existingProductIndex !== -1) {
+  //         // Update quantity for existing product
+  //         return prevSummery.map((product, index) => {
+  //           if (index === existingProductIndex) {
+  //             return {
+  //               ...product,
+  //               QtySelected: product.QtySelected + newQuantity,
+  //             };
+  //           }
+  //           return product;
+  //         });
+  //       } else {
+  //         // Add new product to cart
+  //         return [
+  //           ...prevSummery,
+  //           {
+  //             productName: product.name,
+  //             productImgUrl: product.imageUrl,
+  //             productPrice: product.price,
+  //             QtySelected: newQuantity,
+  //           },
+  //         ];
+  //       }
+  //     });
+  //   }
+  // }
+
+  // function addToCart(e, productId, product) {
+  //   // let totalQuantity = Object.values(inputQuantity).reduce((acc, qty) => {
+  //   //   return acc + qty;
+  //   // }, 0);
+
+  //   // setCartCount(totalQuantity);
+  //   const newQuantity = inputQuantity[productId];
+
+  //   if(newQuantity > 0) {
+  //     const existingProductIndex = qtySummery.findIndex(
+  //       (p) => p.productImgUrl === product.imageUrl
+  //     );
+
+  //   }
 
   //   if (existingProductIndex !== -1) {
   //     if (newQuantity > 0) {
-  //       preventDuplicateOfExistingProduct(newQuantity, existingProductIndex);
+  //       updateExistingProductQuantity(newQuantity, existingProductIndex);
   //     }
   //   } else {
-  //     handleAddProductToCart(productId, product);
+  //     if (newQuantity > 0) {
+  //       addNewProductToCart(productId, product, newQuantity);
+  //     }
+  //   }
+
+  //     setInputQuantity((prevQuantities) => ({
+  //       ...prevQuantities,
+  //       [productId]: 0,
+  //     }));
+
+  //        const totalQuantity = Object.values(inputQuantity).reduce(
+  //     (acc, qty) => acc + qty,
+  //     0
+  //   ) + newQuantity; /
+  //   setCartCount(totalQuantity);
+  // }
+  // }
+
+  // function addToCart(e, productId, product) {
+  //   const newQuantity = inputQuantity[productId];
+
+  //   if (newQuantity > 0) {
+  //     const existingProductIndex = qtySummery.findIndex(
+  //       (p) => p.productImgUrl === product.imageUrl
+  //     );
+
+  //     if (existingProductIndex !== -1) {
+  //       updateExistingProductQuantity(newQuantity, existingProductIndex);
+  //     } else {
+  //       addNewProductToCart(productId, product, newQuantity);
+  //     }
+      
+  //           const totalQuantity =
+  //             Object.values(inputQuantity).reduce((acc, qty) => acc + qty, 0) 
+       
+  //           setCartCount(totalQuantity);
+
+  //     setInputQuantity((prevQuantities) => ({
+  //       ...prevQuantities,
+  //       [productId]: 0,
+  //     }));
   //   }
   // }
-  function addToCart(e, productId, product) {
-    let totalQuantity = Object.values(inputQuantity).reduce((acc, qty) => {
-      return acc + qty;
-    }, 0);
+function addToCart(e, productId, product) {
+  const newQuantity = inputQuantity[productId];
 
-    setCartCount(totalQuantity);
-
+  if (newQuantity > 0) {
     const existingProductIndex = qtySummery.findIndex(
       (p) => p.productImgUrl === product.imageUrl
     );
 
-    const newQuantity = inputQuantity[productId];
-
     if (existingProductIndex !== -1) {
-      if (newQuantity > 0) {
-        updateExistingProductQuantity(newQuantity, existingProductIndex);
-      }
+      updateExistingProductQuantity(newQuantity, existingProductIndex);
     } else {
-      // If the product doesn't exist, add it to the cart
-      if (newQuantity > 0) {
-        addNewProductToCart(productId, product, newQuantity);
-      }
+      addNewProductToCart(productId, product);
     }
-  }
 
+    const totalQuantity = cartCount + newQuantity;
+    setCartCount(totalQuantity);
+
+    setInputQuantity((prevQuantities) => ({
+      ...prevQuantities,
+      [productId]: 0,
+    }));
+  }
+}
 
   function updateExistingProductQuantity(newQuantity, existingProductIndex) {
     setQtySummery((prevSummery) => {

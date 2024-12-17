@@ -1,17 +1,27 @@
-import { useEffect, useContext } from "react";
-import { signInWithPopup } from "firebase/auth";
+import { useEffect, useContext, useState } from "react";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { TextField, Button, Typography, Box, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { AuthContext } from "../Context/ContextProvider";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+import { AuthContext, GeneralContext } from "../Context/ContextProvider";
+import { useViewport } from "react-viewport-hooks";
 
 function Login() {
-  const { email, password, setEmail, setPassword, error, app } =
+  const { email, password, setEmail, setPassword, error, setError, app } =
     useContext(AuthContext);
+  const { setShowWelcome } = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
+  const { vw } = useViewport();
+
+   const [isResetPassword, setIsResetPassword] = useState(false); 
+   const [resetEmail, setResetEmail] = useState(""); 
 
   useEffect(() => {
     if (auth?.currentUser) {
@@ -20,30 +30,90 @@ function Login() {
     }
   }, [auth?.currentUser, setEmail]);
 
+  // Sign in with Google
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+                  localStorage.setItem("email", email);
+      localStorage.setItem("showWelcome", "true");
+
       navigate("/homepage");
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error("Error signing in with Google:", error);
+      setError("Failed to sign in with Google. Please try again.");
+    }
+    setShowWelcome(true);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!navigator.onLine) {
+      setError(
+        "No internet connection. Please check your network and try again."
+      );
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+            localStorage.setItem("email", email);
+      localStorage.setItem("showWelcome", "true");
+
+      navigate("/homepage");
+    } catch (error) {
+      console.error("Error signing in with email and password:", error);
+      switch (error.code) {
+        case "auth/user-not-found":
+          setError("No user found with this email.");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect password. Please try again.");
+          break;
+        default:
+          setError("Failed to log in. Please try again.");
+      }
+
+      if (error.code === "auth/network-request-failed") {
+        setError("Network error. Please check your internet connection.");
+      }
     }
     setEmail("");
     setPassword("");
+    setShowWelcome(true);
+  };
+
+
+  const handlePasswordReset = async () => {
+    if (!resetEmail) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      setError("Password reset email sent! Please check your inbox.");
+      setIsResetPassword(false); // Reset form to login after email is sent
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
+      setError("Failed to send password reset email. Please try again.");
+    }
   };
 
   return (
     <Box
       sx={{
-        minHeight: "100vh",
+        minHeight: vw < 500 ? "20vh" : "70vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "rgb(177, 171, 133)",
       }}
     >
       <Box
         sx={{
-          width: 360,
+          boxSizing: "border-box",
+          margin: "20px",
+          maxWidth: 360,
           padding: 4,
           borderRadius: 3,
           backgroundColor: "#1c1c28",
@@ -59,7 +129,120 @@ function Login() {
             {error}
           </Typography>
         )}
-        <form style={{ marginTop: "1rem" }}>
+
+        <form
+          style={{ marginTop: "1rem" }}
+          onSubmit={isResetPassword ? handlePasswordReset : handleLogin}
+        >
+          {isResetPassword ? (
+            <>
+              <TextField
+                label="Enter your email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={resetEmail || ""}
+                onChange={(e) => setResetEmail(e.target.value)}
+                required
+                InputProps={{ style: { color: "#fff" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  backgroundColor: "#9b7efc",
+                  color: "#ffff",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  "&:hover": {
+                    backgroundColor: "#7a5ef8",
+                  },
+                }}
+              >
+                Send Reset Link
+              </Button>
+              <Link
+                href="#"
+                onClick={() => setIsResetPassword(false)}
+                sx={{
+                  display: "block",
+                  textAlign: "center",
+                  color: "#9c9c9c",
+                  textDecoration: "none",
+                  fontSize: "0.875rem",
+                  mt: 1,
+                }}
+              >
+                Back to Login
+              </Link>
+            </>
+          ) : (
+            <>
+              <TextField
+                label="User Email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={email || ""}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                InputProps={{ style: { color: "#fff" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+              />
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={password || ""}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                InputProps={{ style: { color: "#fff" } }}
+                InputLabelProps={{ style: { color: "#bbb" } }}
+              />
+              <Link
+                href="#"
+                onClick={() => setIsResetPassword(true)}
+                sx={{
+                  display: "block",
+                  textAlign: "left",
+                  color: "#9c9c9c",
+                  textDecoration: "none",
+                  fontSize: "0.875rem",
+                  mt: 1,
+                  mb: 2,
+                }}
+              >
+                Forgot password?
+              </Link>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  backgroundColor: "#9b7efc",
+                  color: "#ffff",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  "&:hover": {
+                    backgroundColor: "#7a5ef8",
+                  },
+                }}
+              >
+                Sign in
+              </Button>
+            </>
+          )}
+        </form>
+
+        {/* <form style={{ marginTop: "1rem" }} onSubmit={handleLogin}>
           <TextField
             label="User Email"
             variant="outlined"
@@ -105,17 +288,18 @@ function Login() {
               mt: 2,
               mb: 2,
               backgroundColor: "#9b7efc",
-              color: "#fff",
+              color: "#ffff",
               textTransform: "none",
               fontSize: "16px",
               "&:hover": {
                 backgroundColor: "#7a5ef8",
               },
             }}
+            onClick={() => setShowWelcome(true)}
           >
             Sign in
           </Button>
-        </form>
+        </form> */}
 
         <Typography align="center" sx={{ color: "#bbb", mt: 2, mb: 1 }}>
           Login with social accounts
@@ -129,27 +313,6 @@ function Login() {
             mt: 2,
           }}
         >
-          {/* <Button
-            onClick={signInWithGoogle}
-            variant="contained"
-            sx={{
-              minWidth: 48,
-              height: 48,
-              backgroundColor: "#4285F4",
-              color: "#fff",
-              borderRadius: "50%",
-              padding: 0,
-              "&:hover": {
-                backgroundColor: "#357ae8",
-              },
-            }}
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"
-              alt="Google logo"
-              style={{ width: "24px", height: "24px" }}
-            />
-          </Button> */}
           <Button
             onClick={signInWithGoogle}
             variant="contained"

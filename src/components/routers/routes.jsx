@@ -1,4 +1,4 @@
-import App from "../Services/App";
+import App from "../App";
 import { HomePage } from "./HomePage";
 import { Cart } from "./Cart";
 import { ProductList } from "./ProductList";
@@ -11,21 +11,44 @@ const routes = [
   {
     path: "/",
     element: <App />,
-    errorPage: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <AuthWrapper />,
+        element: (
+          <AuthWrapper>
+            <HomePage />
+          </AuthWrapper>
+        ),
       },
       {
         path: "homePage",
-        element: <HomePage />,
+        element: (
+          <AuthWrapper>
+            <HomePage />
+          </AuthWrapper>
+        ),
       },
 
-      { path: "productList", element: <ProductList /> },
+      ,
+      {
+        path: "productList",
+        element: (
+          <AuthWrapper>
+            <ProductList />
+          </AuthWrapper>
+        ),
+      },
       { path: "login", element: <Login /> },
       { path: "signUp", element: <SignUp /> },
-      { path: "cart", element: <Cart /> },
+      {
+        path: "cart",
+        element: (
+          <AuthWrapper>
+            <Cart />
+          </AuthWrapper>
+        ),
+      },
     ],
   },
 ];

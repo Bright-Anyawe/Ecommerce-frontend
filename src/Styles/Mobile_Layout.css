@@ -9,7 +9,7 @@
     grid-area: 1 / 1 / 2;
     /* display: grid; */
     grid-template-columns: 300px 780px;
-            padding: 14px 31px;
+    padding: 14px 31px;
   }
 
   #root header h1 {
@@ -62,7 +62,6 @@
     gap: 10px;
   }
 
-
   ul.itemsContainer li a {
     width: 100%;
     display: flex;
@@ -102,16 +101,20 @@
     padding: 4px;
     width: 100%;
     display: flex;
-        flex-direction: column;
-        gap: 50px;
-                margin-top: 30px;
+    flex-direction: column;
+    gap: 50px;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  div.homeHeadText p {
+    font-size: 1.5rem;
   }
 
   div.welcomePageContainer {
     display: flex;
     padding: 20px;
     flex-direction: column;
-    /* background-image: url(src/assets/person_holding_red_shirt.jpg); */
   }
 
   div.welcomePageContainer h2 {
@@ -125,15 +128,15 @@
 
   div.shoppingMallPicture {
     background-image: url(../../assets/perosn_selling_to_client.jpg);
-     width: 300px; 
-  height: 300px; 
-background-size: contain;
-  background-repeat: no-repeat; 
-  background-position: center;
-  border-radius: 9px; 
-  margin: 10px;
-  display: flex;
-        align-self: center;
+    width: 300px;
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 9px;
+    margin: 10px;
+    display: flex;
+    align-self: center;
   }
 
   div.homePageContainer {
@@ -163,8 +166,8 @@ background-size: contain;
     flex-direction: column;
     gap: 50px;
     height: 500px;
-    /* align-items: center; */
-    /* justify-content: center; */
+   
+   
   }
 
   div.ourOfferSubContainer {
@@ -238,8 +241,8 @@ background-size: contain;
     box-shadow: 0px 0px 2px 2px black;
     max-width: 256px;
     padding: 10px;
-    gap: 20px;
-    height: 504px;
+    gap: 0px;
+    height: 484px;
   }
 
   div.container h4 {
@@ -341,7 +344,6 @@ background-size: contain;
   }
 
   footer .creator {
-    /* width: 200px; */
     display: flex;
     flex-direction: row;
     font-size: 1rem;

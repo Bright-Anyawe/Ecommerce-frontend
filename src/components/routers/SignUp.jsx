@@ -10,17 +10,24 @@ import {
 } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { AuthContext } from "../Context/ContextProvider";
+import { AuthContext, GeneralContext } from "../Context/ContextProvider";
+import { useViewport } from "react-viewport-hooks";
 
 export function SignUp() {
-  const { email, password, setEmail, setPassword } = useContext(AuthContext);
+  const {
+    email,
+    password,
+    setEmail,
+    setPassword,
+    repeatPassword,
+    setRepeatPassword,
+  } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const { setShowWelcome } = useContext(GeneralContext);
   const { auth } = useContext(AuthContext);
-
-  const [repeatPassword, setRepeatPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const { vw } = useViewport();
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -48,10 +55,11 @@ export function SignUp() {
         password
       );
       console.log("User signed up:", userCredential.user);
+      setShowWelcome(true);
+            localStorage.setItem("email", email);
+            localStorage.setItem("showWelcome", "true");
+
       navigate("/homepage");
-      setEmail("");
-      setPassword("");
-      setRepeatPassword("");
     } catch (error) {
       const firebaseErrorMessage =
         error.code === "auth/invalid-email"
@@ -67,25 +75,27 @@ export function SignUp() {
   return (
     <Container
       component="main"
-      maxWidth="xs"
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-       marginTop: "50px",
+        marginTop: "50px",
         height: "70vh",
         backgroundColor: "#fff",
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         borderRadius: "12px",
-        padding: "2rem",
+        padding: vw < 500 ? "1rem" : "2rem",
+        maxWidth: vw < 500 ? "330px" : "444px",
+
+        marginInline: vw < 500 && "30px",
       }}
     >
       <Typography
         variant="h5"
         sx={{ fontWeight: "bold", color: "#333", textAlign: "center" }}
       >
-        Welcome to our app
+        Welcome to trend style & tech accessories
       </Typography>
       <Typography
         variant="body2"
