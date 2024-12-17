@@ -65,10 +65,10 @@ export const HomePage = () => {
 
         <div className="creator">
           <p>Made By</p>{" "}
-          <NavLink to="https://github.com/Bright-Anyawe/Shopping_cart">
+          <NavLink to="https://github.com/Bright-Anyawe/Ecommerce-frontend">
             Bright Anyawe{" "}
             <svg
-              href="https://github.com/Bright-Anyawe/Shopping_cart"
+              href="https://github.com/Bright-Anyawe/Ecommerce-frontend"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
