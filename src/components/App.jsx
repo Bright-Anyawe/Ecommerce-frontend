@@ -11,6 +11,7 @@ import { AuthContext } from "./Context/ContextProvider";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
+import { CircularProgress, Typography, Box } from "@mui/material";
 
 const stripePromise = loadStripe(
   "pk_test_51QUlnZ1lUK5qdTQt8kqBLg6243PNUKkrSBALeBOX5bHYIZ9nbO1sEG61JA8xorR9TYIbdPfZbJA48PDKhEaVf9q200XlXu9gYb"
@@ -87,9 +88,59 @@ function App() {
     return unsubscribe;
   }, [auth]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false); 
+    }, 5000);
+
+    return () => clearTimeout(timeout); 
+  }, []);
+
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          position: "relative",
+          width: "100%",
+          backgroundColor: "rgba(64, 91, 91, 0.5)", 
+          zIndex: 10,
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress
+          color="primary"
+          sx={{
+            position: "fixed", 
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 11, 
+          }}
+        />
+
+        <Typography
+          variant="h6"
+          sx={{
+            position: "fixed",
+            top: "60%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontWeight: "bold",
+            color: "#ffffff",
+            zIndex: 10,
+          }}
+        >
+          Loading products...
+        </Typography>
+      </Box>
+    );
   }
+
 
   return (
     <>

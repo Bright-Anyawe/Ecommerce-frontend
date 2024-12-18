@@ -7,11 +7,13 @@ import {
   Box,
   Snackbar,
   Alert,
+  IconButton,
 } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { AuthContext, GeneralContext } from "../Context/ContextProvider";
 import { useViewport } from "react-viewport-hooks";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export function SignUp() {
   const {
@@ -27,6 +29,8 @@ export function SignUp() {
   const { auth } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false); // State for repeat password visibility
   const { vw } = useViewport();
 
   const handleCloseSnackbar = () => {
@@ -56,8 +60,8 @@ export function SignUp() {
       );
       console.log("User signed up:", userCredential.user);
       setShowWelcome(true);
-            localStorage.setItem("email", email);
-            localStorage.setItem("showWelcome", "true");
+      localStorage.setItem("email", email);
+      localStorage.setItem("showWelcome", "true");
 
       navigate("/homepage");
     } catch (error) {
@@ -87,7 +91,6 @@ export function SignUp() {
         borderRadius: "12px",
         padding: vw < 500 ? "1rem" : "2rem",
         maxWidth: vw < 500 ? "330px" : "444px",
-
         marginInline: vw < 500 && "30px",
       }}
     >
@@ -118,7 +121,7 @@ export function SignUp() {
         />
         <TextField
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -126,10 +129,21 @@ export function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
           required
           error={Boolean(errorMessage.includes("Password"))}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+                aria-label="toggle password visibility"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
         <TextField
           label="Repeat password"
-          type="password"
+          type={showRepeatPassword ? "text" : "password"}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -138,6 +152,17 @@ export function SignUp() {
           required
           error={Boolean(errorMessage.includes("match"))}
           helperText={errorMessage.includes("match") ? errorMessage : ""}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                edge="end"
+                aria-label="toggle password visibility"
+              >
+                {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
 
         <Button
@@ -185,5 +210,7 @@ export function SignUp() {
     </Container>
   );
 }
+
+
 
 export default SignUp;

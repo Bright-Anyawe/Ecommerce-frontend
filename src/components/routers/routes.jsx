@@ -7,6 +7,7 @@ import SignUp from "./SignUp";
 import ErrorPage from "../ErrorPage";
 import { AuthWrapper } from "./AuthWrapper";
 
+
 const routes = [
   {
     path: "/",

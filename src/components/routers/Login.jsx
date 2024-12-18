@@ -1,6 +1,13 @@
 import { useEffect, useContext, useState } from "react";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { TextField, Button, Typography, Box, Link } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Link,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
   getAuth,
@@ -9,6 +16,7 @@ import {
 } from "firebase/auth";
 import { AuthContext, GeneralContext } from "../Context/ContextProvider";
 import { useViewport } from "react-viewport-hooks";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 function Login() {
   const { email, password, setEmail, setPassword, error, setError, app } =
@@ -20,8 +28,9 @@ function Login() {
   const googleProvider = new GoogleAuthProvider();
   const { vw } = useViewport();
 
-   const [isResetPassword, setIsResetPassword] = useState(false); 
-   const [resetEmail, setResetEmail] = useState(""); 
+  const [isResetPassword, setIsResetPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   useEffect(() => {
     if (auth?.currentUser) {
@@ -30,11 +39,10 @@ function Login() {
     }
   }, [auth?.currentUser, setEmail]);
 
-  // Sign in with Google
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-                  localStorage.setItem("email", email);
+      localStorage.setItem("email", email);
       localStorage.setItem("showWelcome", "true");
 
       navigate("/homepage");
@@ -57,32 +65,15 @@ function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-            localStorage.setItem("email", email);
+      localStorage.setItem("email", email);
       localStorage.setItem("showWelcome", "true");
 
       navigate("/homepage");
     } catch (error) {
       console.error("Error signing in with email and password:", error);
-      switch (error.code) {
-        case "auth/user-not-found":
-          setError("No user found with this email.");
-          break;
-        case "auth/wrong-password":
-          setError("Incorrect password. Please try again.");
-          break;
-        default:
-          setError("Failed to log in. Please try again.");
-      }
-
-      if (error.code === "auth/network-request-failed") {
-        setError("Network error. Please check your internet connection.");
-      }
+      setError("Failed to log in. Please try again.");
     }
-    setEmail("");
-    setPassword("");
-    setShowWelcome(true);
   };
-
 
   const handlePasswordReset = async () => {
     if (!resetEmail) {
@@ -93,7 +84,7 @@ function Login() {
     try {
       await sendPasswordResetEmail(auth, resetEmail);
       setError("Password reset email sent! Please check your inbox.");
-      setIsResetPassword(false); // Reset form to login after email is sent
+      setIsResetPassword(false);
     } catch (error) {
       console.error("Error sending password reset email:", error);
       setError("Failed to send password reset email. Please try again.");
@@ -158,9 +149,7 @@ function Login() {
                   color: "#ffff",
                   textTransform: "none",
                   fontSize: "16px",
-                  "&:hover": {
-                    backgroundColor: "#7a5ef8",
-                  },
+                  "&:hover": { backgroundColor: "#7a5ef8" },
                 }}
               >
                 Send Reset Link
@@ -195,14 +184,26 @@ function Login() {
               />
               <TextField
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 variant="outlined"
                 fullWidth
                 margin="normal"
                 value={password || ""}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                InputProps={{ style: { color: "#fff" } }}
+                InputProps={{
+                  style: { color: "#ffff" },
+                  endAdornment: (
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      aria-label="toggle password visibility"
+                      sx={{ color: "white" }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  ),
+                }}
                 InputLabelProps={{ style: { color: "#bbb" } }}
               />
               <Link
@@ -241,65 +242,6 @@ function Login() {
             </>
           )}
         </form>
-
-        {/* <form style={{ marginTop: "1rem" }} onSubmit={handleLogin}>
-          <TextField
-            label="User Email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={email || ""}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            InputProps={{ style: { color: "#fff" } }}
-            InputLabelProps={{ style: { color: "#bbb" } }}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={password || ""}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            InputProps={{ style: { color: "#fff" } }}
-            InputLabelProps={{ style: { color: "#bbb" } }}
-          />
-          <Link
-            href="#"
-            sx={{
-              display: "block",
-              textAlign: "left",
-              color: "#9c9c9c",
-              textDecoration: "none",
-              fontSize: "0.875rem",
-              mt: 1,
-              mb: 2,
-            }}
-          >
-            Forget password
-          </Link>
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{
-              mt: 2,
-              mb: 2,
-              backgroundColor: "#9b7efc",
-              color: "#ffff",
-              textTransform: "none",
-              fontSize: "16px",
-              "&:hover": {
-                backgroundColor: "#7a5ef8",
-              },
-            }}
-            onClick={() => setShowWelcome(true)}
-          >
-            Sign in
-          </Button>
-        </form> */}
 
         <Typography align="center" sx={{ color: "#bbb", mt: 2, mb: 1 }}>
           Login with social accounts

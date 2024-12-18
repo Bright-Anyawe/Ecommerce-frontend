@@ -158,6 +158,11 @@ main {
     padding-bottom: 5rem;
 }
 
+.featuredProduct .homeTextContainer {
+text-align: center;
+    padding-inline: 54px;
+    padding-block: 40px;
+}
 
 .homeHeadText {
   padding: 50px;
@@ -171,6 +176,7 @@ align-items: center;
 .homeHeadText p {
   font-size: 2rem;
       font-family: Montserrat-Bold, sans-serif;
+      padding: 10px;
 
 }
 
@@ -283,3 +289,13 @@ footer p {
   color: white;
 }
 
+.creator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.creator a{
+  color: red;
+}

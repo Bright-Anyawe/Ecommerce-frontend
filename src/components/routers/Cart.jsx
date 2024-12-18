@@ -10,7 +10,9 @@ export function Cart() {
   const { qtySummery, setQtySummery, setCartCount } =
     useContext(QuantityContext);
   const [totalCostPrice, setTotalCostPrice] = useState([]);
+  const cartContainerRef = useRef(null)
   const { vw } = useViewport();
+  
 
   useMemo(() => {
     function handleCostPrice() {
@@ -30,17 +32,7 @@ export function Cart() {
   }, [qtySummery]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: vw < 500 ? "column" : "row",
-        justifyContent: "center",
-        marginTop: "40px",
-        marginBottom: "50px",
-        gap: "50px",
-      }}
-      // ref={cartContainerRef}
-    >
+    <Box className="cart-container">
       <Box
         sx={{
           display: "flex",
@@ -50,7 +42,6 @@ export function Cart() {
           justifyContent: "center",
           maxWidth: vw < 500 ? "500px" : "746px",
         }}
-        // ref={productContainerRef}
       >
         {qtySummery.length !== 0 ? (
           qtySummery.map((summery, index) => (
@@ -65,7 +56,7 @@ export function Cart() {
                 border: "1px solid #ddd",
                 borderRadius: 2,
                 maxWidth: vw < 500 ? "250px" : vw > 1110 ? "703px" : "703",
-                width: vw > 1110 ?  "700px" : "100%",
+                width: vw > 1110 ? "700px" : "100%",
                 textAlign: "center",
               }}
             >

@@ -161,6 +161,12 @@
     height: 300px;
   }
 
+  section.featuredProduct div.homeTextContainer {
+text-align: center;
+    padding-inline: 14px;
+    padding-block: 40px;
+}
+
   div.ourOfferContainer {
     display: flex;
     flex-direction: column;

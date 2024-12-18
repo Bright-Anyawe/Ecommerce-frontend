@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-// import { fetchProducts } from "../Services/fetchApi";
 import ProductAdder from "../Services/postApi";
-// import firebaseApp from "../Services/fireBaseConfig";
 import { getDocs, collection } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { FetchProducts } from "../Services/fetchApi";
 import { AuthContext } from "../Context/ContextProvider";
 import { useContext } from "react";
 import { QuantityContext } from "../Context/ContextProvider";
+import { CircularProgress, Typography, Box } from "@mui/material";
 
 export const ProductList = () => {
   const {
@@ -19,6 +18,7 @@ export const ProductList = () => {
     setQtySummery,
   } = useContext(QuantityContext);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const { app } = useContext(AuthContext);
 
   const db = getFirestore(app);
@@ -26,12 +26,7 @@ export const ProductList = () => {
 
   const increment = (e, productId) => {
     let siblingValue = e.target.previousElementSibling.value;
-
-    console.log(productId);
-
     const increaseQuantity = parseInt(siblingValue) + 1;
-    console.log(increaseQuantity);
-
     setInputQuantity((prevQuantities) => ({
       ...prevQuantities,
       [productId]: increaseQuantity,
@@ -40,12 +35,7 @@ export const ProductList = () => {
 
   const decrease = (e, productId) => {
     let sibling = e.target.nextElementSibling.value;
-    console.log(sibling);
-
-    // console.log(quantity[itemId]);
     const decreaseQuantity = parseInt(sibling) - 1;
-    console.log(decreaseQuantity);
-
     setInputQuantity((prevQuantities) => ({
       ...prevQuantities,
       [productId]: decreaseQuantity,
@@ -54,7 +44,6 @@ export const ProductList = () => {
 
   function handleQuantity(e, productId) {
     const newQuantity = parseInt(e.target.value);
-
     if (inputQuantity !== undefined) {
       setInputQuantity((prevQuantities) => ({
         ...prevQuantities,
@@ -70,7 +59,6 @@ export const ProductList = () => {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(products);
       return products;
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -81,10 +69,7 @@ export const ProductList = () => {
   const removeDuplicates = (products) => {
     const uniqueProducts = products.filter(
       (product, index, self) =>
-        index ===
-        self.findIndex(
-          (p) => p.id === product.id // Compare relevant properties
-        )
+        index === self.findIndex((p) => p.id === product.id)
     );
     return uniqueProducts;
   };
@@ -93,8 +78,13 @@ export const ProductList = () => {
     const getProducts = async () => {
       const productsData = await fetchProducts();
       const uniqueProduct = removeDuplicates(productsData);
-      console.log(uniqueProduct);
       setProducts(uniqueProduct);
+
+      const timeoutId = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
     };
     getProducts();
   }, []);
@@ -117,133 +107,25 @@ export const ProductList = () => {
     localStorage.setItem("inputQuantity", JSON.stringify(inputQuantity));
   }, [cartCount, qtySummery, inputQuantity]);
 
-  // function addToCart(e, productId, product) {
-  //   let totalQuantity = Object.values(inputQuantity).reduce((acc, qty) => {
-  //     return acc + qty;
-  //   }, 0);
-
-  //   setCartCount(totalQuantity);
-
-  //   const newQuantity = inputQuantity[productId];
-  //   if (newQuantity > 0) {
-  //     setQtySummery((prevSummery) => {
-  //       const existingProductIndex = prevSummery.findIndex(
-  //         (p) => p.productImgUrl === product.imageUrl
-  //       );
-
-  //       if (existingProductIndex !== -1) {
-  //         // Update quantity for existing product
-  //         return prevSummery.map((product, index) => {
-  //           if (index === existingProductIndex) {
-  //             return {
-  //               ...product,
-  //               QtySelected: product.QtySelected + newQuantity,
-  //             };
-  //           }
-  //           return product;
-  //         });
-  //       } else {
-  //         // Add new product to cart
-  //         return [
-  //           ...prevSummery,
-  //           {
-  //             productName: product.name,
-  //             productImgUrl: product.imageUrl,
-  //             productPrice: product.price,
-  //             QtySelected: newQuantity,
-  //           },
-  //         ];
-  //       }
-  //     });
-  //   }
-  // }
-
-  // function addToCart(e, productId, product) {
-  //   // let totalQuantity = Object.values(inputQuantity).reduce((acc, qty) => {
-  //   //   return acc + qty;
-  //   // }, 0);
-
-  //   // setCartCount(totalQuantity);
-  //   const newQuantity = inputQuantity[productId];
-
-  //   if(newQuantity > 0) {
-  //     const existingProductIndex = qtySummery.findIndex(
-  //       (p) => p.productImgUrl === product.imageUrl
-  //     );
-
-  //   }
-
-  //   if (existingProductIndex !== -1) {
-  //     if (newQuantity > 0) {
-  //       updateExistingProductQuantity(newQuantity, existingProductIndex);
-  //     }
-  //   } else {
-  //     if (newQuantity > 0) {
-  //       addNewProductToCart(productId, product, newQuantity);
-  //     }
-  //   }
-
-  //     setInputQuantity((prevQuantities) => ({
-  //       ...prevQuantities,
-  //       [productId]: 0,
-  //     }));
-
-  //        const totalQuantity = Object.values(inputQuantity).reduce(
-  //     (acc, qty) => acc + qty,
-  //     0
-  //   ) + newQuantity; /
-  //   setCartCount(totalQuantity);
-  // }
-  // }
-
-  // function addToCart(e, productId, product) {
-  //   const newQuantity = inputQuantity[productId];
-
-  //   if (newQuantity > 0) {
-  //     const existingProductIndex = qtySummery.findIndex(
-  //       (p) => p.productImgUrl === product.imageUrl
-  //     );
-
-  //     if (existingProductIndex !== -1) {
-  //       updateExistingProductQuantity(newQuantity, existingProductIndex);
-  //     } else {
-  //       addNewProductToCart(productId, product, newQuantity);
-  //     }
-      
-  //           const totalQuantity =
-  //             Object.values(inputQuantity).reduce((acc, qty) => acc + qty, 0) 
-       
-  //           setCartCount(totalQuantity);
-
-  //     setInputQuantity((prevQuantities) => ({
-  //       ...prevQuantities,
-  //       [productId]: 0,
-  //     }));
-  //   }
-  // }
-function addToCart(e, productId, product) {
-  const newQuantity = inputQuantity[productId];
-
-  if (newQuantity > 0) {
-    const existingProductIndex = qtySummery.findIndex(
-      (p) => p.productImgUrl === product.imageUrl
-    );
-
-    if (existingProductIndex !== -1) {
-      updateExistingProductQuantity(newQuantity, existingProductIndex);
-    } else {
-      addNewProductToCart(productId, product);
+  function addToCart(e, productId, product) {
+    const newQuantity = inputQuantity[productId];
+    if (newQuantity > 0) {
+      const existingProductIndex = qtySummery.findIndex(
+        (p) => p.productImgUrl === product.imageUrl
+      );
+      if (existingProductIndex !== -1) {
+        updateExistingProductQuantity(newQuantity, existingProductIndex);
+      } else {
+        addNewProductToCart(productId, product);
+      }
+      const totalQuantity = cartCount + newQuantity;
+      setCartCount(totalQuantity);
+      setInputQuantity((prevQuantities) => ({
+        ...prevQuantities,
+        [productId]: 0,
+      }));
     }
-
-    const totalQuantity = cartCount + newQuantity;
-    setCartCount(totalQuantity);
-
-    setInputQuantity((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: 0,
-    }));
   }
-}
 
   function updateExistingProductQuantity(newQuantity, existingProductIndex) {
     setQtySummery((prevSummery) => {
@@ -272,56 +154,68 @@ function addToCart(e, productId, product) {
   }
 
   return (
-    <>
-      <div>
-        <ul className="shopProductContainer">
-          {products.length > 0 ? (
-            products.map((product) => (
-              <div className="container" key={product.id}>
-                <li className="imageContainer">
-                  <img src={product.imageUrl} alt={product.name} />
-                </li>
-
-                <div className="additionalInfoContainer">
-                  <div className="titleContainer">
-                    {" "}
-                    <h4>{product.name}</h4>
-                  </div>
-
-                  <p>{`Price: $${product.price}`}</p>
-
-                  <div className="quantityContainer">
-                    <button onClick={(e) => decrease(e, product.id)}>-</button>
-
-                    <input
-                      type="number"
-                      data-index={product.id}
-                      maxLength="20"
-                      value={inputQuantity?.[product.id] || 0}
-                      onChange={(e) => handleQuantity(e, product.id)}
-                    />
-
-                    <button onClick={(e) => increment(e, product.id)}>+</button>
-                  </div>
-
-                  <div className="priceOrderEl">
-                    <button
-                      className="orderBtn"
-                      onClick={(e) => addToCart(e, product.id, product)}
-                    >
-                      Order now!
-                    </button>
-                  </div>
+    <div>
+      <ul className="shopProductContainer">
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "50vh",
+              flexDirection: "column",
+            }}
+          >
+            <CircularProgress color="primary" />
+            <Typography
+              variant="h6"
+              sx={{
+                marginTop: 2,
+                fontWeight: "bold",
+                color: "#9b7efc",
+              }}
+            >
+              Loading products...
+            </Typography>
+          </Box>
+        ) : (
+          // Display products once loading is complete
+          products.map((product) => (
+            <div className="container" key={product.id}>
+              <li className="imageContainer">
+                <img src={product.imageUrl} alt={product.name} />
+              </li>
+              <div className="additionalInfoContainer">
+                <div className="titleContainer">
+                  <h4>{product.name}</h4>
+                </div>
+                <p>{`Price: $${product.price}`}</p>
+                <div className="quantityContainer">
+                  <button onClick={(e) => decrease(e, product.id)}>-</button>
+                  <input
+                    type="number"
+                    data-index={product.id}
+                    maxLength="20"
+                    value={inputQuantity?.[product.id] || 0}
+                    onChange={(e) => handleQuantity(e, product.id)}
+                  />
+                  <button onClick={(e) => increment(e, product.id)}>+</button>
+                </div>
+                <div className="priceOrderEl">
+                  <button
+                    className="orderBtn"
+                    onClick={(e) => addToCart(e, product.id, product)}
+                  >
+                    Order now!
+                  </button>
                 </div>
               </div>
-            ))
-          ) : (
-            <p>Loading product....</p>
-          )}
-        </ul>
-      </div>
+            </div>
+          ))
+        )}
+      </ul>
       <ProductAdder />
       <FetchProducts />
-    </>
+    </div>
   );
 };

@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { Box, Typography, Button, Container } from "@mui/material";
 
 
 export const HomePage = () => {
@@ -15,19 +16,18 @@ export const HomePage = () => {
       </section>
 
       <section className="featuredProduct">
-        <div className="homeHeadText">
-          <h2>
-            Welcome to <span className="shopText">ShopRyt</span>. Your One-Stop
-            Shop for Everything You Need!
-          </h2>
-
-          <p>
+        <Box sx={{ textAlign: "center",  paddingInline: 3, paddingBlock: 5 }} className="homeTextContainer" >
+          <Typography variant="h4" sx={{ fontWeight: 600 }}>
+            Welcome to <span style={{ color: "#9b7efc" }}>ShopRyt</span>. Your
+            One-Stop Shop for Everything You Need!
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2, color: "#aa" }}>
             At ShopRyt, we believe in offering something for everyone. Whether
             you’re looking to refresh your wardrobe with stylish clothes,
             upgrade your tech with the latest electronics, or add a touch of
             elegance to your look with beautiful jewelry, we’ve got you covered.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         <div className="ourOfferContainer">
           <h1 className="offerEl">We Offer</h1>
@@ -65,6 +65,7 @@ export const HomePage = () => {
 
         <div className="creator">
           <p>Made By</p>{" "}
+          
           <NavLink to="https://github.com/Bright-Anyawe/Ecommerce-frontend">
             Bright Anyawe{" "}
             <svg
