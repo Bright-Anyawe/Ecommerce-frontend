@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import {  useMemo, useState} from "react";
 import { useContext } from "react";
 import { QuantityContext } from "../Context/ContextProvider";
 import { Delete } from "../Feature Components/Delete";
@@ -10,7 +10,6 @@ export function Cart() {
   const { qtySummery, setQtySummery, setCartCount } =
     useContext(QuantityContext);
   const [totalCostPrice, setTotalCostPrice] = useState([]);
-  const cartContainerRef = useRef(null)
   const { vw } = useViewport();
   
 
@@ -160,7 +159,7 @@ export function Cart() {
             <Typography variant="body1">${totalCostPrice}</Typography>
           </Box>
 
-          <Checkout totalAmount={totalCostPrice} />
+            <Checkout totalAmount={totalCostPrice} />
         </Box>
       </Box>
     </Box>

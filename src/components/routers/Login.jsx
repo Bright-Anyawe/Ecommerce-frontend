@@ -22,7 +22,7 @@ function Login() {
       const result = await signInWithPopup(auth, googleProvider);
       localStorage.setItem("email", result.user.email);
       localStorage.setItem("showWelcome", "true");
-      setShowWelcome(true);
+      setShowWelcome(true); 
       navigate("/homepage");
     } catch (error) {
       console.error("Google Sign-In Error:", error);
